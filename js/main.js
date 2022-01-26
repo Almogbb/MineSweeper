@@ -18,12 +18,17 @@ var gGame = {
     secsPassed: 0
 };
 
+//FIXME
+//need to fix right click on cell when there is flag on it.
 
 
 
 function initGame() {
     gBoard = buildBoard(gLevel.size);
-    renderBoard(gBoard)
+    randomMines(gBoard);
+    randomMines(gBoard);
+    renderBoard(gBoard);
+
 }
 
 function buildBoard(length) {
@@ -31,14 +36,17 @@ function buildBoard(length) {
     for (var i = 0; i < length; i++) {
         board[i] = []
         for (var j = 0; j < length; j++) {
-            var cell = { minesAroundCount: 0, isShown: true, isMine: false, isMarked: false }
+            var cell = { minesAroundCount: 0, isShown: false, isMine: false, isMarked: false }
 
             board[i][j] = cell;
         }
 
     }
-    board[1][1].isMine = true;
-    board[2][2].isMine = true;
+    // for (var i = 0; i < gGame.mine; i++) {
+
+
+    // board[1][1].isMine = true;
+    // board[2][2].isMine = true;
     return board
 }
 
@@ -51,10 +59,11 @@ function renderBoard(board) {
         strHTML += '<tr>';
         for (var j = 0; j < board[0].length; j++) {
 
-            var cell = board[i][j];
-            var cellClass = `cell cell-${i}-${j}`
+            // var cell = board[i][j];
+            var cellClass = `cell cell-${i}-${j} cover`
 
-            if (cell.isShown) cellClass += ' cover'
+            // if (!cell.isShown) cellClass += ' cover'
+
             strHTML += `<td class=" ${cellClass}" onclick="cellClicked(this,${i},${j})" oncontextmenu="cellMarked(this,${i},${j})">`
 
             strHTML += '</td>';
@@ -93,6 +102,7 @@ function cellClicked(elCell, i, j) {
 
     if (!currCell.isMine) {
         elCell.classList.remove('cover');
+        currCell.isShown = true;
         gGame.shownCount++;
         elCell.classList.add('clicked');
         gGame.markedCount++;
@@ -104,8 +114,9 @@ function cellClicked(elCell, i, j) {
     //should be else after  if (!cell.isMine)
     //changed gBoard[i][j] to cell.isMine
     if (currCell.isMine) {
-        // currCell.isShown = true;
+        currCell.isShown = true;
         elCell.classList.remove('cover');
+        gGame.shownCount++;
         elCell.innerText = MINE;
         elCell.style.backgroundColor = 'red'
 
@@ -121,10 +132,6 @@ function cellClicked(elCell, i, j) {
 }
 
 
-function changeLevel(boardSize) {
-    gLevel.size = boardSize
-    initGame();
-}
 function gameOver() {
     gGame.isOn = false;
     gElbtn.innerText = '😵'
@@ -165,4 +172,30 @@ function cellMarked(elCell, i, j) {
     console.log('game', gGame);
 
 }
+
+function changeLevel(boardSize) {
+    gLevel.size = boardSize
+    initGame();
+}
+
+function randomMines(board) {
+
+    var emptyCells = Array.from({ length: board.length }, (_, i) => i);
+    shuffle(emptyCells);
+    var i = emptyCells.pop()
+    var j = emptyCells.pop()
+    var location = { i: i, j: j };
+    console.log(location);
+
+    board[i][j].isMine = true;
+    // board[i][j].isMine = true;
+
+
+
+
+}
+
+    // renderCell(location, MINE)
+
+// }
 
