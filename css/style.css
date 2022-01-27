@@ -4,6 +4,14 @@
 
 body{
     background-color: lightcoral;
+
+}
+h1{
+    margin-top: 70px;
+}
+
+table{
+    margin-top: 20px;
 }
 
 .btn{
@@ -15,16 +23,29 @@ body{
     text-align: center;
     /* font-size: 1.5em; */
 }
-
 .cover {
     background-color: rgb(168, 165, 165)
 }
 
-.face{
-    margin-bottom: 10px;
-    
+div.num-container{
+margin-bottom: 0px;
 }
 
+.face{
+    display: inline;
+    margin-right: 10px;
+
+}
+.lives{
+    display: inline;
+    padding-left: 80px;
+}
 .clicked{
     background-color: lightskyblue;
+}
+.clock{
+    display: inline;
+    /* margin: auto;
+    padding-right: 10px;
+    margin-right: 30px; */
 }

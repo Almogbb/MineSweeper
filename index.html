@@ -13,17 +13,20 @@
     <center>
 
         <h1>Mine Sweeper</h1>
-        <button class="btn face" onclick="restart()">😃</button><br>
 
-        <button class="btn btn-level" onclick="changeLevel(4)">Beginner</button>
-        <button class="btn btn-level" onclick="changeLevel(8)">Intermediate</button>
-        <button class="btn btn-level" onclick="changeLevel(12)">Expert</button>
+        <div class="num-container">
+            <button class="btn face" onclick="restart()">😃</button><br>
+            <p class="clock"></p>
+            <p class="lives">3 Lives Left!</p>
+        </div>
+
+        <button class="btn btn-level" onclick="changeLevel(4,2)">Beginner</button>
+        <button class="btn btn-level" onclick="changeLevel(8,12)">Intermediate</button>
+        <button class="btn btn-level" onclick="changeLevel(12,30)">Expert</button>
 
         <table>
             <tbody class=box></tbody>
         </table>
-
-
 
         <script src="js/main.js"></script>
         <script src="js/utils.js"></script>
