@@ -45,17 +45,21 @@ function buildBoard(length) {
         }
     }
 
+    board[0][0].isMine = true;
+    board[1][1].isMine = true;
 
-    var mineCount = 0;
-    while (mineCount < gLevel.mine) {
-        var firstI = getRandomInt(0, board.length - 1);
-        var firstJ = getRandomInt(0, board.length - 1);
 
-        if (!board[firstI][firstJ].isMine) {
-            board[firstI][firstJ].isMine = true;
-            mineCount++;
-        }
-    }
+    // var mineCount = 0;
+    // while (mineCount < gLevel.mine) {
+    //     var firstI = getRandomInt(0, board.length - 1);
+    //     var firstJ = getRandomInt(0, board.length - 1);
+
+    //     if (!board[firstI][firstJ].isMine) {
+    //         board[firstI][firstJ].isMine = true;
+    //         mineCount++;
+    //     }
+    // }
+
     return board
 }
 
@@ -95,7 +99,7 @@ function cellClicked(elCell, i, j) {
     var currCell = gBoard[i][j];
     if (!gGame.isOn) return;
     if (currCell.isShown) return
-    if (currCell.isShown && !currCell.isMine) return;
+    // if (currCell.isShown && !currCell.isMine) return;
     if (currCell.isMarked) return;
 
     currCell.minesAroundCount = setMinesNegsCount(i, j, gBoard);
@@ -126,13 +130,14 @@ function cellClicked(elCell, i, j) {
 
     if (!currCell.minesAroundCount && !currCell.isMine) expendNegs(i, j, gBoard);
 
+    console.log(currCell);
     checkVictory()
 }
 
 function lives() {
     var elLives = document.querySelector('.lives');
     gLives--;
-    elLives.innerText = `${gLives} Lives left!`;
+    elLives.innerText = `${gLives} Lives Left!`;
 }
 
 function victory() {
@@ -172,14 +177,15 @@ function restart() {
 
     initGame();
     var elLives = document.querySelector('.lives');
-    elLives.innerText = `${gLives} Lives left!`;
+    elLives.innerText = `${gLives} Lives Left!`;
 }
 
 function cellMarked(elCell, i, j) {
     window.event.preventDefault();
     if (!gGame.isOn) return;
     var currCell = gBoard[i][j];
-    var currCellAroundMines = setMinesNegsCount(i, j, gBoard);
+    // var currCellAroundMines = setMinesNegsCount(i, j, gBoard);
+    // console.log(currCellAroundMines);
 
     if (gIsFirstClick) {
         gInterval = setInterval(stopWatch, 10);
@@ -197,6 +203,8 @@ function cellMarked(elCell, i, j) {
         gGame.markedCount++;
     }
 
+    console.log(currCell);
+
     checkVictory();
 }
 
@@ -211,19 +219,22 @@ function expendNegs(cellI, cellJ, board) {
             currCell.minesAroundCount = setMinesNegsCount(i, j, board);
             var elCell = document.querySelector(`[data-i="${i}"][data-j="${j}"]`);
 
-            if (currCell.minesAroundCount && !currCell.isMarked) {
+            if (currCell.minesAroundCount) {
                 elCell.innerText = currCell.minesAroundCount;
+                currCell.isShown = true;
                 elCell.classList.remove('cover');
                 elCell.classList.add('clicked');
             }
-            else if (!currCell.minesAroundCount && !currCell.isMarked) {
-                board[i][j].innerText = EMPTY;
+            else if (!currCell.minesAroundCount) {
+                // board[i][j].innerText = EMPTY;
                 currCell.isShown = true;
                 gGame.shownCount++;
                 elCell.classList.remove('cover');
                 elCell.classList.add('clicked');
             }
+            console.log(currCell);
         }
+
     }
 }
 
@@ -253,23 +264,18 @@ function changeLevel(boardSize, minesAmount) {
 }
 
 function checkVictory() {
-    var countMind = 0;
+    var countMine = 0;
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             var cell = gBoard[i][j]
             if (cell.isMine) {
                 if (!cell.isMarked) {
-                    countMind++;
-                    if (countMind > 2) {
-                        return;
-                    }
+                    countMine++;
+                    if (countMine > 2) return;
                 }
             }
             else {
-                if (!cell.isShown) {
-                    return;
-                }
-
+                if (!cell.isShown) return;
             }
         }
     }
