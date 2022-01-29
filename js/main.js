@@ -29,8 +29,6 @@ var gGame = {
     markedCount: 0
 };
 
-
-
 function initGame() {
     gBoard = buildBoard(gLevel.size);
     renderBoard(gBoard);
@@ -58,12 +56,6 @@ function buildBoard(length) {
         }
     }
 
-    // board[0][0].isMine = true;
-    // board[1][1].isMine = true;
-
-    // maybe wrap it with function
-
-
     var mineCount = 0;
     while (mineCount < gLevel.mine) {
         var firstI = getRandomInt(0, board.length - 1);
@@ -74,7 +66,6 @@ function buildBoard(length) {
             mineCount++;
         }
     }
-
     return board
 }
 
@@ -95,14 +86,11 @@ function renderBoard(board) {
     elBox.innerHTML = strHTML;
 }
 
-
-
 function cellClicked(elCell, i, j) {
 
     var currCell = gBoard[i][j];
     if (!gGame.isOn) return;
     if (currCell.isShown) return
-    // if (currCell.isShown && !currCell.isMine) return;
     if (currCell.isMarked) return;
 
     currCell.minesAroundCount = setMinesNegsCount(i, j, gBoard);
@@ -129,23 +117,17 @@ function cellClicked(elCell, i, j) {
         gGame.shownCount++;
         elCell.innerText = MINE;
 
-
         if (gLives <= 0) gameOver(elCell);
     }
 
     if (!currCell.minesAroundCount && !currCell.isMine) expendNegs(i, j, gBoard);
 
-    console.log(currCell);
-    console.log(gGame.shownCount);
     checkVictory();
     bestScore();
 }
 
 function lives() {
-    // maybe fix this function
-
     gLives--;
-
     gElLives.innerText = `${gLives > 0 ? gLives + ' Lives Left!' : 'You Lose'} `;
 }
 
@@ -185,23 +167,17 @@ function restart() {
     gGame.shownCount = 0;
     clearInterval(gInterval);
     gInterval = 0;
-
     initGame();
-    // var elLives = document.querySelector('.lives');
     gElLives.innerText = `${gLives > 0 ? gLives + ' Lives Left!' : 'You Lose'} `;
-    // lives()
 }
 
 function cellMarked(elCell, i, j) {
     window.event.preventDefault();
     if (!gGame.isOn) return;
     var currCell = gBoard[i][j];
-    // var currCellAroundMines = setMinesNegsCount(i, j, gBoard);
-    // console.log(currCellAroundMines);
 
     if (gIsFirstClick) {
         gGameTimeStart = Date.now();
-        console.log('gameTimeStart', gGameTimeStart);
         gInterval = setInterval(stopWatch, 10);
         gIsFirstClick = false;
     }
@@ -216,9 +192,6 @@ function cellMarked(elCell, i, j) {
         currCell.isMarked = true;
         gGame.markedCount++;
     }
-
-    console.log(currCell);
-
     checkVictory();
     bestScore();
 }
@@ -229,7 +202,7 @@ function expendNegs(row, col, board) {
         for (var j = col - 1; j <= col + 1; j++) {
             if (j < 0 || j >= board[i].length) continue;
             if (i === row && j === col) continue;
-            //removed 238(if) 244(else if) !currCell.isMarked and put it here
+
             var currCell = board[i][j];
             if (currCell.isMarked) continue;
 
@@ -250,31 +223,6 @@ function expendNegs(row, col, board) {
             elCell.innerText = currCell.minesAroundCount ? currCell.minesAroundCount : '';
             elCell.classList.remove('cover');
             elCell.classList.add('clicked');
-
-
-            // if (currCell.minesAroundCount) {
-            //     elCell.innerText = currCell.minesAroundCount;
-            //     currCell.isShown = true;
-
-            //     elCell.classList.remove('cover');
-            //     elCell.classList.add('clicked');
-            // }
-            // else if (!currCell.minesAroundCount) {
-            //     // board[i][j].innerText = EMPTY;
-            //     currCell.isShown = true;
-            //     gGame.shownCount++;
-            //     elCell.classList.remove('cover');
-            //     elCell.classList.add('clicked');
-            // }
-            // console.log(currCell);
-            // if (!board[i][j].minesAroundCount && !board[i][j].isShown) expendNegs(i, j, board);
-
-            // if (!currCell.minesAroundCount && !board[i][j].isShown) {
-            //     board[i][j].isShown = true;
-            //     gGame.shownCount++;
-            //     expendNegs(i, j, gBoard)
-            // }
-            console.log(gGame.shownCount);
         }
     }
 }
@@ -296,7 +244,6 @@ function checkVictory() {
         }
     }
     gIsVictory = true;
-    // maybe change to if and then call victory?
     victory();
 }
 
@@ -323,13 +270,15 @@ function bestScore() {
     }
 }
 
-function safeClick(elBox, board) {
+function safeClick(board) {
     var runTime = 0;
     var cellLocation = emptyCell(board);
     var removedNums = cellLocation.pop();
 
     if (!removedNums) return;
-    if (!gSafeClick) return;
+    if (!gSafeClick) {
+        return;
+    }
 
     if (!gBoard[removedNums.i][removedNums.j].isShown) {
         var elCell = document.querySelector(`[data-i="${removedNums.i}"][data-j="${removedNums.j}"]`);
@@ -344,8 +293,6 @@ function safeClick(elBox, board) {
     }
     --gSafeClick;
     renderSafeClick()
-    if (gSafeClick < 1) elBox.classList.remove('active');
-
 }
 
 

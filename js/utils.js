@@ -89,8 +89,8 @@ function renderSafeClick() {
         case (0):
             elBox.innerText = `No Safe-Click`;
             break;
-        default:
-            elBox.innerText = `${SAFE} ${SAFE} ${SAFE}`;
+        // default:
+        //     elBox.innerText = `${SAFE} ${SAFE} ${SAFE}`;
     }
 }
 
@@ -110,12 +110,4 @@ function renderHighScore() {
         // default:
         //     elHighScore.innerText = '"Play to set score!"'
     }
-}
-
-
-
-function renderCell(location, value) {
-    // Select the elCell and set the value
-    var elCell = document.querySelector(`.cell-${location.i}-${location.j}`);
-    elCell.innerHTML = value;
 }
