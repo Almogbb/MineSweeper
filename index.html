@@ -11,24 +11,29 @@
 
 <body class="img-bgc" onload=" initGame()">
     <center>
+
         <div class="h1-container">
-            <h1>Mine Sweeper</h1>
+            <h1> <span class="mine">Mine</span> <span class="sweeper">Sweeper</span>!</h1>
         </div>
 
+
         <div class="num-container">
-            <button class="btn face" onclick="restart()">😃</button><br>
+            <button class="btn active face" onclick="restart()">😃</button><br>
             <button class="row2 clock"></button>
             <button class="row2 lives">3 Lives Left!</button>
             <!-- <p class="lives">3 Lives Left!</p> -->
         </div>
 
-        <button class="btn btn-level" onclick="changeLevel(4,2)">Beginner</button>
-        <button class="btn btn-level" onclick="changeLevel(8,12)">Intermediate</button>
-        <button class="btn btn-level" onclick="changeLevel(12,30)">Expert</button>
+        <button class="btn active btn-level" onclick="changeLevel(4,2,2)">Beginner</button>
+        <button class="btn active btn-level" onclick="changeLevel(8,12,3)">Intermediate</button>
+        <button class="btn active btn-level" onclick="changeLevel(12,30,3)">Expert</button>
 
         <table>
             <tbody class=box></tbody>
+            <button class="btn active safe" onclick="safeClick(this,gBoard)"><span class="safe-span">💡
+                    💡 💡</span></button>
         </table>
+        <button class="highScore"></button>
 
         <script src="js/main.js"></script>
         <script src="js/utils.js"></script>
